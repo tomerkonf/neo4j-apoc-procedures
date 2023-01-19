@@ -8,6 +8,7 @@ derby*
 .gradle
 gradle.properties
 build/
+apoc-core/
 *~
 \#*
 target
