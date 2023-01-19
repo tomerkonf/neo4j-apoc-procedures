@@ -2,3 +2,4 @@
 	path = apoc-core
 	url = https://github.com/neo4j/apoc
 	branch = dev
+	ignore = all
