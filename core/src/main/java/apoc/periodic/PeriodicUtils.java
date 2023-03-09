@@ -27,6 +27,8 @@ import java.util.stream.Stream;
 import static apoc.periodic.Periodic.JobInfo;
 
 public class PeriodicUtils {
+    public static final String COMMITTED = "committed";
+    public static final String FAILED = "failed";
 
     private PeriodicUtils() {
 
@@ -91,9 +93,9 @@ public class PeriodicUtils {
                         retryCount -> collector.incrementRetried(),
                         onComplete -> {
                             // in this case we update statusDetails for each batch, instead of counting rows/lines
-                            Util.setKernelStatusMap(tx, true,
-                                    Map.of("successes", collector.getBatches() - collector.getFailedBatches().get(), 
-                                    "errors", collector.getFailedBatches().get()));
+                            Util.setKernelStatus(tx, true,
+                                    Map.of(COMMITTED, collector.getBatches() - collector.getFailedBatches().get(),
+                                            FAILED, collector.getFailedBatches().get()));
                             collector.incrementBatches();
                             executeBatch.release();
                             activeFutures.decrementAndGet();

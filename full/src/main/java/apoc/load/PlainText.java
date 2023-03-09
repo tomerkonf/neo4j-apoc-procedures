@@ -1,5 +1,6 @@
 package apoc.load;
 
+import apoc.util.Util;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -16,7 +17,6 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static apoc.load.LoadHtml.withError;
-import static apoc.util.Util.setKernelStatusMap;
 
 public class PlainText implements HtmlResultInterface {
 
@@ -29,7 +29,7 @@ public class PlainText implements HtmlResultInterface {
             final String result = getResult(config, errorList, log, failConfig, element);
             plainText.append(result);
             final int counter = rows.incrementAndGet();
-            setKernelStatusMap(tx, counter, Map.of("rows", counter, "result", result));
+            Util.setKernelStatusPeriodically(tx, counter, Map.of("rows", counter, "result", result));
         }
         return plainText.toString();
     }

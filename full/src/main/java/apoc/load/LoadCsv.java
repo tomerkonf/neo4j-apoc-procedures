@@ -26,7 +26,6 @@ import java.util.stream.StreamSupport;
 import apoc.load.util.Results;
 import static apoc.util.FileUtils.closeReaderSafely;
 import static apoc.util.Util.cleanUrl;
-import static apoc.util.Util.setKernelStatusMap;
 import static java.util.Collections.emptyList;
 
 @Extended
@@ -140,7 +139,7 @@ public class LoadCsv {
                     final CSVResult result = new CSVResult(header, row, lineNo, ignore, mapping, nullValues, results);
                     action.accept(result);
                     lineNo++;
-                    setKernelStatusMap(tx, lineNo, JsonUtil.convertToMap(result));
+                    Util.setKernelStatusPeriodically(tx, lineNo, JsonUtil.convertToMap(result));
                     return true;
                 }
                 return false;

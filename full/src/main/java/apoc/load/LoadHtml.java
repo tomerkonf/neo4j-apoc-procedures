@@ -5,6 +5,8 @@ import apoc.result.MapResult;
 import apoc.util.MissingDependencyException;
 import apoc.util.FileUtils;
 import java.nio.charset.UnsupportedCharsetException;
+
+import apoc.util.Util;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Attribute;
 import org.jsoup.nodes.Document;
@@ -31,7 +33,6 @@ import java.util.stream.Stream;
 
 import static apoc.load.LoadHtmlBrowser.getChromeInputStream;
 import static apoc.load.LoadHtmlBrowser.getFirefoxInputStream;
-import static apoc.util.Util.setKernelStatusMap;
 
 @Extended
 public class LoadHtml {
@@ -127,7 +128,7 @@ public class LoadHtml {
                     if(element.hasText()) result.put("text", element.text());
                 }
                 final int counter = rows.incrementAndGet();
-                setKernelStatusMap(tx, counter, Map.of("rows", counter, "result", result));
+                Util.setKernelStatusPeriodically(tx, counter, Map.of("rows", counter, "result", result));
                 elementList.add(result);
                 return null;
             });
